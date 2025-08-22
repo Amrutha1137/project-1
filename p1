@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <ctime>
+#include <map>
+using namespace std;
+
+struct Transaction {
+    int id;
+    string date;
+    string type;
+    string category;
+    double amount;
+    string notes;
+};
+
+string getCurrentDate() {
+    time_t t = time(nullptr);
+    tm* now = localtime(&t);
+    char buffer[11];
+    strftime(buffer, 11, "%Y-%m-%d", now);
+    return string(buffer);
+}
+
+class FinanceTracker {
+    vector<Transaction> transactions;
+public:
+    void addTransaction(string type, string category, double amount, string notes="") {
+        Transaction t;
+        t.id = transactions.size() + 1;
+        t.date = getCurrentDate();
+        t.type = type;
+        t.category = category;
+        t.amount = amount;
+        t.notes = notes;
+        transactions.push_back(t);
+    }
+
+    void showTransactions() {
+        cout << "\n--- Transactions ---\n";
+        for (auto &t : transactions) {
+            cout << "[" << t.id << "] " << t.date << " | " << t.type 
+                 << " | " << t.category << " | $" << t.amount 
+
